@@ -10,9 +10,8 @@ import (
 	"github.com/tomsobpl/aoc/pkg/core"
 )
 
-func loadPlugin() func() core.AocSolution {
-	path := pluginsPath + "/year2025-day1-plugin.so"
-	p, err := plugin.Open(path)
+func loadPlugin(input core.AocInput) func() core.AocSolution {
+	p, err := plugin.Open(fmt.Sprintf("%s/year%d-day%d-plugin.so", pluginsPath, input.Year(), input.Day()))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -59,10 +58,10 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-
-		var NewSolution func() core.AocSolution = loadPlugin()
-		task := core.NewAocTask(NewSolution())
 		input, err := core.NewAocInputFromYaml(yamlBytes)
+
+		var NewSolution func() core.AocSolution = loadPlugin(input)
+		task := core.NewAocTask(NewSolution())
 
 		result := task.Solve(input)
 		fmt.Printf("Result: %v\n", result)

@@ -1,9 +1,29 @@
 package utils
 
 import (
+	"fmt"
+	"slices"
 	"strconv"
 	"strings"
 )
+
+func ConvertStringToGridOfRunes(input string) ([][]rune, error) {
+	rows := ConvertStringToNotEmptyLines(input)
+	size := len(rows[0])
+	grid := make([][]rune, len(rows))
+
+	slices.Reverse(rows)
+
+	for i, row := range rows {
+		if len(row) != size {
+			return nil, fmt.Errorf("invalid row length, expected %d, got %d", size, len(row))
+		}
+
+		grid[i] = []rune(row)
+	}
+
+	return grid, nil
+}
 
 func ConvertStringToInt(input string) int {
 	result, _ := strconv.Atoi(input)

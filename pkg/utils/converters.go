@@ -30,10 +30,10 @@ func ConvertStringToInt(input string) int {
 	return result
 }
 
-func ConvertStringToInts(input string) []int {
+func ConvertStringToInts(input string, separator string) []int {
 	result := make([]int, len(input))
 
-	for i, s := range strings.Split(input, "") {
+	for i, s := range strings.Split(input, separator) {
 		result[i] = ConvertStringToInt(s)
 	}
 

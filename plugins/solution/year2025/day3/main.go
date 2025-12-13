@@ -90,7 +90,7 @@ func newBatteryBankFromString(raw string) (batteryBank, error) {
 		return batteryBank{}, fmt.Errorf("invalid battery bank format: %s", raw)
 	}
 
-	return batteryBank{cells: utils.ConvertStringToInts(raw)}, nil
+	return batteryBank{cells: utils.ConvertStringToInts(raw, "")}, nil
 }
 
 func NewSolution() core.AocSolution {

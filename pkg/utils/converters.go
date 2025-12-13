@@ -26,7 +26,7 @@ func ConvertStringToGridOfRunes(input string) ([][]rune, error) {
 }
 
 func ConvertStringToInt(input string) int {
-	result, _ := strconv.Atoi(input)
+	result, _ := strconv.Atoi(strings.TrimSpace(input))
 	return result
 }
 
@@ -50,6 +50,46 @@ func ConvertStringToNotEmptyLines(input string) []string {
 	for _, line := range ConvertStringToLines(input) {
 		if line != "" {
 			result = append(result, line)
+		}
+	}
+
+	return result
+}
+
+func ConvertStringsToInts(inputs []string) []int {
+	result := make([]int, len(inputs))
+	for i, input := range inputs {
+		result[i] = ConvertStringToInt(input)
+	}
+	return result
+}
+
+func TransposeStringMatrix(matrix [][]string) [][]string {
+	result := make([][]string, len(matrix[0]))
+
+	for i := range result {
+		result[i] = make([]string, len(matrix))
+	}
+
+	for i, row := range matrix {
+		for j, col := range row {
+			result[j][i] = col
+		}
+	}
+
+	return result
+}
+
+func TransposeRuneMatrix(matrix [][]rune) [][]rune {
+	result := make([][]rune, len(matrix[0]))
+
+	for i := range result {
+		result[i] = make([]rune, len(matrix))
+	}
+
+	for i, row := range matrix {
+		for j, col := range row {
+			result[j][i] = col
 		}
 	}
 

@@ -59,11 +59,12 @@ func (s Solution) solvePartTwo(payload string) core.AocResult {
 	grid := s.preparePayload(payload)
 	grid.FlipVertically()
 
+	splitters := make(map[string]int)
 	timelines := 0
 
 	for x, v := range grid.Row(0) {
 		if v == startLocation {
-			timelines = s.followTimeLine(grid, 1, x, timelines+1)
+			timelines = s.followTimeline(grid, 1, x, timelines+1, splitters)
 			break
 		}
 	}
@@ -71,20 +72,27 @@ func (s Solution) solvePartTwo(payload string) core.AocResult {
 	return core.NewAocResult(strconv.Itoa(timelines))
 }
 
-func (s Solution) followTimeLine(grid *utils.GridOfRunes, y int, x int, timelines int) int {
+func (s Solution) followTimeline(grid *utils.GridOfRunes, y int, x int, timeline int, splitters map[string]int) int {
+	k := fmt.Sprintf("%d,%d", y, x)
+
+	if _, ok := (splitters)[k]; ok {
+		return splitters[k]
+	}
+
 	if y >= grid.Height() {
-		return timelines
+		return timeline
 	}
 
 	switch grid.Cells[y][x] {
 	case emptyCell:
-		return s.followTimeLine(grid, y+1, x, timelines)
+		return s.followTimeline(grid, y+1, x, timeline, splitters)
 	case splitter:
-		timelines = s.followTimeLine(grid, y+1, x-1, timelines)
-		return s.followTimeLine(grid, y+1, x+1, timelines+1)
+		splitters[k] = s.followTimeline(grid, y+1, x-1, timeline, splitters)
+		splitters[k] += s.followTimeline(grid, y+1, x+1, timeline, splitters)
+		return splitters[k]
 	}
 
-	return timelines
+	return timeline
 }
 
 func (s Solution) preparePayload(rawPayload string) *utils.GridOfRunes {

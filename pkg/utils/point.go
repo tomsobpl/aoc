@@ -10,10 +10,14 @@ type Point struct {
 	Y int
 }
 
-func (p Point) DistanceTo(other Point) float32 {
+func (p Point) DistanceTo(other Point) float64 {
 	dx := float64(p.X - other.X)
 	dy := float64(p.Y - other.Y)
-	return float32(math.Sqrt(dx*dx + dy*dy))
+	return math.Sqrt(dx*dx + dy*dy)
+}
+
+func PointFromSlice(input []int) Point {
+	return Point{input[0], input[1]}
 }
 
 type Point3D struct {

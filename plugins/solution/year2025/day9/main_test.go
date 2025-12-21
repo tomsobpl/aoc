@@ -18,7 +18,7 @@ func TestPartOneSolution(t *testing.T) {
 }
 
 func TestPartTwoSolution(t *testing.T) {
-	want := "0"
+	want := "24"
 	have := Solution{}.solvePartTwo(loadInput())
 
 	if have.Result() != want {

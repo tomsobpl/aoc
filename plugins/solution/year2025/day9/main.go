@@ -21,6 +21,22 @@ func (a area) d() utils.Point {
 	return utils.Point{X: a.a.X, Y: a.b.Y}
 }
 
+func (a area) bl() utils.Point {
+	return utils.Point{X: min(a.a.X, a.b.X), Y: min(a.a.Y, a.b.Y)}
+}
+
+func (a area) br() utils.Point {
+	return utils.Point{X: max(a.a.X, a.b.X), Y: min(a.a.Y, a.b.Y)}
+}
+
+func (a area) tl() utils.Point {
+	return utils.Point{X: min(a.a.X, a.b.X), Y: max(a.a.Y, a.b.Y)}
+}
+
+func (a area) tr() utils.Point {
+	return utils.Point{X: max(a.a.X, a.b.X), Y: max(a.a.Y, a.b.Y)}
+}
+
 func (a area) tilesCovered() int {
 	x := max(a.a.X, a.b.X) - min(a.a.X, a.b.X) + 1
 	y := max(a.a.Y, a.b.Y) - min(a.a.Y, a.b.Y) + 1
@@ -54,7 +70,14 @@ func (s Solution) solvePartOne(payload string) core.AocResult {
 }
 
 func (s Solution) solvePartTwo(payload string) core.AocResult {
-	return core.NewAocResult(strconv.Itoa(-1))
+	areas := s.preparePayload(payload)
+	value := 0
+
+	for _, area := range areas {
+		value = max(value, area.tilesCovered())
+	}
+
+	return core.NewAocResult(strconv.Itoa(value))
 }
 
 func (s Solution) preparePayload(rawPayload string) []area {
